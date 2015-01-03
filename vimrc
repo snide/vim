@@ -38,6 +38,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'elzr/vim-json'
 Plugin 'ap/vim-css-color'
 Plugin 'godlygeek/tabular'
+Plugin 'mrtazz/simplenote.vim'
 
 call vundle#end()
 
@@ -296,6 +297,10 @@ nmap <M-D-v> <plug>EasyClipSwapPasteBackwards
 set guifont=Meslo\ LG\ S\ for\ Powerline:h11
 let g:airline_powerline_fonts               = 1
 let g:airline#extensions#whitespace#enabled = 1
+
+" Easymotion
+nmap ff <Plug>(easymotion-s2)
+let g:EasyMotion_smartcase = 1
 
 " Spellcheck
 nmap <silent> <leader>s :set spell!<CR>
