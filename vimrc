@@ -18,7 +18,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'xolox/vim-misc'
-Plugin 'terryma/vim-multiple-cursors'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'xolox/vim-session'
 Plugin 'Valloric/YouCompleteMe'
@@ -33,7 +32,12 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'tpope/vim-surround'
 Plugin 'brettof86/vim-swigjs'
-Plugin 'maxbrunsfeld/vim-yankstack'
+Plugin 'svermeulen/vim-easyclip'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-repeat'
+Plugin 'elzr/vim-json'
+Plugin 'ap/vim-css-color'
+Plugin 'godlygeek/tabular'
 
 call vundle#end()
 
@@ -196,16 +200,16 @@ let g:nerdtree_tabs_open_on_gui_startup = 0
 nnoremap <D-k> :NERDTreeTabsToggle<CR>
 
 " Ctrlp
-let g:ctrlp_cmd = 'CtrlPMixed'			" search anything (in files, buffers and MRU files at the same time.)
-let g:ctrlp_working_path_mode = 'ra'	" search for nearest ancestor like .git, .hg, and the directory of the current file
-let g:ctrlp_match_window_bottom = 0		" show the match window at the top of the screen
-let g:ctrlp_by_filename = 1
-let g:ctrlp_max_height = 10				" maxiumum height of match window
-let g:ctrlp_switch_buffer = 'et'		" jump to a file if it's open already
-let g:ctrlp_use_caching = 1				" enable caching
-let g:ctrlp_clear_cache_on_exit=0  		" speed up by not removing clearing cache evertime
-let g:ctrlp_mruf_max = 250 				" number of recently opened files
-let g:ctrlp_working_path_mode=2
+let g:ctrlp_cmd                 = 'CtrlPMixed' " search anything (in files, buffers and MRU files at the same time.)
+let g:ctrlp_working_path_mode   = 'ra'         " search for nearest ancestor like .git, .hg, and the directory of the current file
+let g:ctrlp_match_window_bottom = 0            " show the match window at the top of the screen
+let g:ctrlp_by_filename         = 1            " use filename for search
+let g:ctrlp_max_height          = 10           " maxiumum height of match window
+let g:ctrlp_switch_buffer       = 'et'         " jump to a file if it's open already
+let g:ctrlp_use_caching         = 1            " enable caching
+let g:ctrlp_clear_cache_on_exit = 0            " speed up by not removing clearing cache evertime
+let g:ctrlp_mruf_max            = 250          " number of recently opened files
+let g:ctrlp_working_path_mode   = 2
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|build)$',
@@ -241,50 +245,33 @@ let g:ctrlp_buftag_types = {
 
 
 " Vim Sessions
-let g:session_autosave = 'yes'
-let g:session_autoload = 'yes'
-let g:session_default_to_last = 1
+let g:session_autosave         = 'yes'
+let g:session_autoload         = 'yes'
+let g:session_default_to_last  = 1
 
 " Delitmate
-let g:delimitMate_expand_cr = 1       "create line break when pressing enter
+let g:delimitMate_expand_cr    = 1       "create line break when pressing enter
 let g:delimitMate_expand_space = 1
 
 " Multicursor
-let g:multi_cursor_use_default_mapping = 0
-let g:multi_cursor_next_key = '<D-d>'
-let g:multi_cursor_prev_key = '<D-u>'
-let g:multi_cursor_skip_key = '<D-k>' "until we got multiple keys support
-let g:multi_cursor_quit_key = '<Esc>'
+" let g:something_cursor_use_default_mapping = 0
+" let g:something_cursor_next_key = '<D-d>'
+" let g:something_cursor_prev_key = '<D-u>'
+" let g:something_cursor_skip_key = '<D-k>' "until we got somethingple keys support
+" let g:something_cursor_quit_key = '<Esc>'
+
 
 " YouCompleteMe and Ultisnips
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_min_num_of_chars_for_completion = 1
-let g:ycm_complete_in_strings = 0
-let g:ycm_key_list_select_completion=[]
-let g:ycm_key_list_previous_completion=[]
+let g:ycm_min_num_of_chars_for_completion           = 1
+let g:ycm_complete_in_strings                       = 0
+let g:ycm_key_list_select_completion                = []
+let g:ycm_key_list_previous_completion              = []
 
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsListSnippets="<c-e>"
-let g:UltiSnipsSnippetDirectories=["snips"]
-
-" Enable tabbing through list of results
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-               return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
-
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+let g:UltiSnipsExpandTrigger                        = "<tab>"
+let g:UltiSnipsJumpForwardTrigger                   = "<tab>"
+let g:UltiSnipsListSnippets                         = "<c-e>"
+let g:UltiSnipsSnippetDirectories                   = ["snips"]
 
 " Expand snippet or return
 let g:ulti_expand_res = 0
@@ -299,12 +286,15 @@ endfunction
 " Set <space> as primary trigger
 inoremap <return> <C-R>=Ulti_ExpandOrEnter()<CR>
 
-"Yankstack
-nmap <M-p> <Plug>yankstack_substitute_older_paste
+let g:EasyClipAutoFormat             = 1
+let g:EasyClipUsePasteToggleDefaults = 0
+
+nmap <M-v> <plug>EasyClipSwapPasteForward
+nmap <M-D-v> <plug>EasyClipSwapPasteBackwards
 
 " Airline
 set guifont=Meslo\ LG\ S\ for\ Powerline:h11
-let g:airline_powerline_fonts=1
+let g:airline_powerline_fonts               = 1
 let g:airline#extensions#whitespace#enabled = 1
 
 " Spellcheck
@@ -322,6 +312,27 @@ let g:surround_{char2nr("s")} = "<span\1class: \r..*\r class=\"&\"\1>\r</span>""
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['javascript', 'python', 'php', 'json', 'sass'],
                            \ 'passive_filetypes': ['html'] }
+
+" Tabular
+
+if exists(":Tabularize")
+  nmap <leader>t= :Tabularize /=<CR>
+  vmap <leader>t= :Tabularize /=<CR>
+  nmap <leader>t: :Tabularize /:<CR>
+  vmap <leader>t: :Tabularize /:<CR>
+endif
+
+inoremap <silent> = =<Esc>:call <SID>ealign()<CR>a
+function! s:ealign()
+  let p = '^.*=\s.*$'
+  if exists(':Tabularize') && getline('.') =~# '^.*=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^=]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*=\s*\zs.*'))
+    Tabularize/=/l1
+    normal! 0
+    call search(repeat('[^=]*=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
 
 " Ack
 set grepprg=ack
