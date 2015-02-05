@@ -36,9 +36,8 @@ Plugin 'svermeulen/vim-easyclip'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-repeat'
 Plugin 'elzr/vim-json'
-Plugin 'ap/vim-css-color'
 Plugin 'godlygeek/tabular'
-Plugin 'mrtazz/simplenote.vim'
+Plugin 'jlong/sass-convert.vim'
 
 call vundle#end()
 
@@ -289,6 +288,11 @@ inoremap <return> <C-R>=Ulti_ExpandOrEnter()<CR>
 
 let g:EasyClipAutoFormat             = 1
 let g:EasyClipUsePasteToggleDefaults = 0
+let g:EasyClipUseCutDefaults = 0
+
+nmap x <Plug>MoveMotionPlug
+xmap x <Plug>MoveMotionXPlug
+nmap xx <Plug>MoveMotionLinePlug
 
 nmap <M-v> <plug>EasyClipSwapPasteForward
 nmap <M-D-v> <plug>EasyClipSwapPasteBackwards
@@ -351,7 +355,7 @@ let g:ackhighlight = 1
 " ----------------------------------------- "
 
 " Highlight bad whitespace
-highlight ExtraWhitespace ctermbg=black guibg=#181818
+highlight ExtraWhitespace ctermbg=red guibg=#DC322F
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
@@ -375,8 +379,10 @@ nnoremap <F9> :call Wrap()<cr>
 function! Wrap()
     if (&wrap == 1)
         set nowrap
+        set nolinebreak
     else
         set wrap
+        set linebreak
     endif
 endfunction
 
@@ -387,4 +393,4 @@ au BufNewFile,BufRead *.html setlocal ft=htmldjango
 augroup myvimrc
     au!
     au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
-augroup END
+    augroup END
