@@ -19,7 +19,6 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'xolox/vim-misc'
 Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'xolox/vim-session'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'mileszs/ack.vim'
 Plugin 'scrooloose/syntastic'
@@ -38,6 +37,8 @@ Plugin 'tpope/vim-repeat'
 Plugin 'elzr/vim-json'
 Plugin 'godlygeek/tabular'
 Plugin 'jlong/sass-convert.vim'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'mtscout6/vim-cjsx'
 
 call vundle#end()
 
@@ -103,6 +104,8 @@ nnoremap <left> <C-w><left>
 nnoremap <right> <C-w><right>
 nnoremap j gj
 nnoremap k gk
+nnoremap <D-j> 10j
+nnoremap <D-k> 10k
 
 " Set up some colors
 syntax enable
@@ -151,8 +154,6 @@ if has("gui_macvim")
   vmap <D-[> <gv
   vmap <D-]> >gv
 
-  "Open sidebar with cmd+k
-  map <D-k> :NERDTreeTabsToggle<CR>
 
   " This mapping makes Ctrl-Tab switch between tabs.
   " Ctrl-Shift-Tab goes the other way.
@@ -197,7 +198,8 @@ endif
 " Nerdtree
 let NERDTreeShowHidden=1        " Show Nerdtree hidden files
 let g:nerdtree_tabs_open_on_gui_startup = 0
-nnoremap <D-k> :NERDTreeTabsToggle<CR>
+nnoremap <D-p> :NERDTreeTabsToggle<CR>
+map <D-p> :NERDTreeTabsToggle<CR>
 
 " Ctrlp
 let g:ctrlp_cmd                 = 'CtrlPMixed' " search anything (in files, buffers and MRU files at the same time.)
@@ -243,11 +245,6 @@ let g:ctrlp_buftag_types = {
 \ 'rc'         : '--language-force=rust --rust-types=fTm'
 \ }
 
-
-" Vim Sessions
-let g:session_autosave         = 'yes'
-let g:session_autoload         = 'yes'
-let g:session_default_to_last  = 1
 
 " Delitmate
 let g:delimitMate_expand_cr    = 1       "create line break when pressing enter
@@ -331,21 +328,21 @@ if exists(":Tabularize")
   vmap <leader>t: :Tabularize /:<CR>
 endif
 
-inoremap <silent> = =<Esc>:call <SID>ealign()<CR>a
-function! s:ealign()
-  let p = '^.*=\s.*$'
-  if exists(':Tabularize') && getline('.') =~# '^.*=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^=]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*=\s*\zs.*'))
-    Tabularize/=/l1
-    normal! 0
-    call search(repeat('[^=]*=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
-endfunction
+" inoremap <silent> = =<Esc>:call <SID>ealign()<CR>a
+" function! s:ealign()
+"   let p = '^.*=\s.*$'
+"   if exists(':Tabularize') && getline('.') =~# '^.*=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+"     let column = strlen(substitute(getline('.')[0:col('.')],'[^=]','','g'))
+"     let position = strlen(matchstr(getline('.')[0:col('.')],'.*=\s*\zs.*'))
+"     Tabularize/=/l1
+"     normal! 0
+"     call search(repeat('[^=]*=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+"   endif
+" endfunction
 
 " Ack
 set grepprg=ack
-let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:ackprg = 'ag --vimgrep --nogroup --nocolor --column'
 let g:ackhighlight = 1
 " let g:ackpreview = 1
 
@@ -353,6 +350,9 @@ let g:ackhighlight = 1
 " ----------------------------------------- "
 " Useful scripts
 " ----------------------------------------- "
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
 
 " Highlight bad whitespace
 highlight ExtraWhitespace ctermbg=red guibg=#DC322F
