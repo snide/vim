@@ -12,7 +12,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
 
 Plugin 'gmarik/vundle'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tomtom/tcomment_vim'
@@ -20,9 +20,11 @@ Plugin 'SirVer/ultisnips'
 Plugin 'xolox/vim-misc'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'mileszs/ack.vim'
+" Plugin 'mileszs/ack.vim'
+Plugin 'rking/ag.vim'
 Plugin 'scrooloose/syntastic'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'jtratner/vim-flavored-markdown'
@@ -79,6 +81,8 @@ set softtabstop=2               " Use 2 spaces for tabs
 set expandtab                   " Use tabs for spaces
 set nowrap                      " Don't word wrap
 set autoindent                  " Try and figure out indedentation when possible
+set foldmethod=indent
+set foldlevelstart=20
 
 "General key remaps
 let mapleader = ","             " Replace the <leader> with ,
@@ -89,6 +93,7 @@ map <S-D-Right> vg_
 map! <S-D-Right> <esc>vg_
 map <S-D-Left> v^
 map! <S-D-Left> <esc>v^
+map <S-F> za
 
 "Clear search once I'm done
 nnoremap <esc><esc> :noh<cr>
@@ -106,6 +111,7 @@ nnoremap j gj
 nnoremap k gk
 nnoremap <D-j> 10j
 nnoremap <D-k> 10k
+vnoremap . :norm.<CR>
 
 " Set up some colors
 syntax enable
@@ -205,13 +211,14 @@ map <D-p> :NERDTreeTabsToggle<CR>
 let g:ctrlp_cmd                 = 'CtrlPMixed' " search anything (in files, buffers and MRU files at the same time.)
 let g:ctrlp_working_path_mode   = 'ra'         " search for nearest ancestor like .git, .hg, and the directory of the current file
 let g:ctrlp_match_window_bottom = 0            " show the match window at the top of the screen
-let g:ctrlp_by_filename         = 1            " use filename for search
+let g:ctrlp_by_filename         = 0            " use filename for search
 let g:ctrlp_max_height          = 10           " maxiumum height of match window
 let g:ctrlp_switch_buffer       = 'et'         " jump to a file if it's open already
-let g:ctrlp_use_caching         = 1            " enable caching
+let g:ctrlp_use_caching         = 0            " enable caching
 let g:ctrlp_clear_cache_on_exit = 0            " speed up by not removing clearing cache evertime
 let g:ctrlp_mruf_max            = 250          " number of recently opened files
 let g:ctrlp_working_path_mode   = 2
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' "use silver searcher.
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|build)$',
@@ -341,10 +348,14 @@ endif
 " endfunction
 
 " Ack
-set grepprg=ack
-let g:ackprg = 'ag --vimgrep --nogroup --nocolor --column'
-let g:ackhighlight = 1
+" set grepprg=ack
+" let g:ackprg = 'ag --vimgrep --nogroup --nocolor --column'
+let g:ag_highlight = 1
 " let g:ackpreview = 1
+
+let g:ag_working_path_mode="r"
+nnoremap \ :Ag<SPACE>-i<SPACE>
+nnoremap \\ :Ag<SPACE>-G<SPACE>'\.(cjsx)$'<SPACE>
 
 
 " ----------------------------------------- "
@@ -388,6 +399,7 @@ endfunction
 
 " Use html django if the file is any sort of .html file.
 au BufNewFile,BufRead *.html setlocal ft=htmldjango
+au BufNewFile,BufRead *.css setlocal ft=sass
 
 " Reload vim when the vimrc file is edited.
 augroup myvimrc
