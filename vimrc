@@ -20,14 +20,15 @@ Plugin 'SirVer/ultisnips'
 Plugin 'xolox/vim-misc'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'Valloric/YouCompleteMe'
-" Plugin 'mileszs/ack.vim'
 Plugin 'rking/ag.vim'
+Plugin 'Valloric/MatchTagAlways'
 Plugin 'scrooloose/syntastic'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'jtratner/vim-flavored-markdown'
+Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'mustache/vim-mustache-handlebars'
@@ -52,7 +53,7 @@ filetype plugin indent on
 " ----------------------------------
 
 " Ignore these files
-set wildignore+=*/.git/*,*/tmp/*,*/.hg/*,*/.svn/*,*/build/*,*/vendor/*,*/dist/*,*.css,*/node-modules/*,*/node_modules/*,*/bower_components/*,*/.sass-cache/*,*/.grunt/*,*.svg
+set wildignore+=*/.git/*,*/tmp/*,*/.hg/*,*/.svn/*,*/build/*,*/vendor/*,*/dist/*,*.css,*/node-modules/*,*/node_modules/*,*/bower_components/*,*/.sass-cache/*,*/.grunt/*,*.svg,*/assets/*
 
 " Generic Vim settings
 set noerrorbells                " No beeps
@@ -121,6 +122,7 @@ colorscheme solarized
 highlight SignColumn guibg=#272822
 highlight SyntasticErrorLine guifg=white guibg=#6e3232
 highlight ExtraWhitespace ctermbg=red guibg=#CCCCCC
+highlight MatchParen cterm=none guibg=#22a398 guifg=#002b35
 
 " ----------------------------------
 " Macvim only
@@ -252,6 +254,9 @@ let g:ctrlp_buftag_types = {
 \ 'rc'         : '--language-force=rust --rust-types=fTm'
 \ }
 
+" Gundo
+
+nnoremap wtf :GundoToggle<CR>
 
 " Delitmate
 let g:delimitMate_expand_cr    = 1       "create line break when pressing enter
@@ -334,6 +339,15 @@ if exists(":Tabularize")
   nmap <leader>t: :Tabularize /:<CR>
   vmap <leader>t: :Tabularize /:<CR>
 endif
+
+let g:mta_filetypes = {
+  \ 'html' : 1,
+  \ 'xhtml' : 1,
+  \ 'xml' : 1,
+  \ 'jinja' : 1,
+  \ 'coffee' : 1,
+  \}
+
 
 " inoremap <silent> = =<Esc>:call <SID>ealign()<CR>a
 " function! s:ealign()
