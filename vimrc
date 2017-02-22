@@ -43,6 +43,11 @@ Plugin 'godlygeek/tabular'
 Plugin 'jlong/sass-convert.vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'mtscout6/vim-cjsx'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'groenewege/vim-less'
+Plugin 'mxw/vim-jsx'
+Plugin 'dag/vim-fish'
+Plugin 'sickill/vim-pasta'
 
 call vundle#end()
 
@@ -124,6 +129,8 @@ highlight SignColumn guibg=#272822
 highlight SyntasticErrorLine guifg=white guibg=#6e3232
 highlight ExtraWhitespace ctermbg=red guibg=#CCCCCC
 highlight MatchParen cterm=none guibg=#22a398 guifg=#002b35
+" This makes macvim / solarized work well with gitgutter
+highlight clear SignColumn
 
 " ----------------------------------
 " Macvim only
@@ -255,13 +262,18 @@ let g:ctrlp_buftag_types = {
 \ 'rc'         : '--language-force=rust --rust-types=fTm'
 \ }
 
-" Gundo
+" Gitgutter
+let g:gitgutter_override_sign_column_highlight = 0
 
+" Gundo
 nnoremap wtf :GundoToggle<CR>
 
 " Delitmate
 let g:delimitMate_expand_cr    = 1       "create line break when pressing enter
 let g:delimitMate_expand_space = 1
+
+" Vim-Pasta for better paste indenting
+let g:pasta_enabled_filetypes = ['html', 'javascript', 'css', 'coffee']
 
 " Multicursor
 " let g:something_cursor_use_default_mapping = 0
