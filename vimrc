@@ -45,9 +45,12 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'mtscout6/vim-cjsx'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'groenewege/vim-less'
+Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'dag/vim-fish'
 Plugin 'sickill/vim-pasta'
+Plugin 'vimwiki/vimwiki'
+Plugin 'skwp/greplace.vim'
 
 call vundle#end()
 
@@ -324,6 +327,9 @@ set guifont=Meslo\ LG\ S\ for\ Powerline:h11
 let g:airline_powerline_fonts               = 1
 let g:airline#extensions#whitespace#enabled = 1
 
+" JSX
+let g:jsx_ext_required = 0
+
 " Easymotion
 nmap ff <Plug>(easymotion-s2)
 let g:EasyMotion_smartcase = 1
@@ -382,7 +388,10 @@ let g:ag_highlight = 1
 
 let g:ag_working_path_mode="r"
 nnoremap \ :Ag<SPACE>-i<SPACE>
-nnoremap \\ :Ag<SPACE>-G<SPACE>'\.(cjsx)$'<SPACE>
+nnoremap \\ :Ag<SPACE>-G<SPACE>'\.(less)$'<SPACE>
+
+set grepprg=ag
+let g:grep_cmd_opts = '--line-numbers --noheading'
 
 
 " ----------------------------------------- "
